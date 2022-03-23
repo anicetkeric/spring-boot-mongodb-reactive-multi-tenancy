@@ -1,9 +1,9 @@
 package com.boottech.springbootmongodbreactivemultitenancy.configuration;
 
+import com.boottech.springbootmongodbreactivemultitenancy.common.AppConstant;
 import com.boottech.springbootmongodbreactivemultitenancy.common.exception.TenantDataSourceNotFoundException;
 import com.boottech.springbootmongodbreactivemultitenancy.domain.model.TenantClient;
 import com.boottech.springbootmongodbreactivemultitenancy.domain.model.TenantDatasource;
-import com.boottech.springbootmongodbreactivemultitenancy.filter.TenantContext;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
@@ -44,8 +44,8 @@ public class MongoDataSources {
     public void initTenant() {
         tenantClients = new ArrayList<>();
         List<TenantDatasource> tenants = dataSourceProperties.getDatasources();
-        tenantClients = tenants.stream().map(t -> new TenantClient(t.getId(), t.getDatabase(),
-                t.getPort(), t.getHost(), t.getUsername(), t.getPassword())).collect(Collectors.toList());
+        tenantClients = tenants.stream().map(t -> new TenantClient(t.getId(), t.getDatabase(),t.getPort(), t.getHost(), t.getUsername(), t.getPassword()))
+                .collect(Collectors.toList());
 
     }
 
@@ -79,18 +79,22 @@ public class MongoDataSources {
      * @return MongoDatabase
      */
     public Mono<MongoDatabase> mongoDatabaseCurrentTenantResolver() {
-        TenantClient tenantClient = getCurrentTenant();
-        final String databaseName = tenantClient.getDatabase();
-        return Mono.just(tenantClient.getClient().getDatabase(databaseName));
+
+        return Mono
+                .deferContextual(Mono::just)
+                .filter(ct -> ct.hasKey(AppConstant.TENANT_ID))
+                .map(ct -> ct.get(AppConstant.TENANT_ID))
+                .map(tenantId -> {
+                    TenantClient currentTenant = getCurrentTenant(tenantId.toString());
+                    return currentTenant.getClient().getDatabase(currentTenant.getDatabase());
+                });
     }
 
 
     /**
      * @return TenantClient tenant client.
      */
-    private TenantClient getCurrentTenant(){
-        final String tenantId = TenantContext.get();
-
+    private TenantClient getCurrentTenant(String tenantId){
       return tenantClients.stream().filter(c -> c.getId().equals(tenantId))
                 .findFirst().orElseThrow(() -> new TenantDataSourceNotFoundException("Tenant not found"));
     }

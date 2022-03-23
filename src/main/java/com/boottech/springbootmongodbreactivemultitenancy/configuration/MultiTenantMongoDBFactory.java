@@ -22,7 +22,7 @@ public class MultiTenantMongoDBFactory extends SimpleReactiveMongoDatabaseFactor
 
 
     @Override
-    public Mono<MongoDatabase> getMongoDatabase(String dbName) throws DataAccessException {
+    public Mono<MongoDatabase> getMongoDatabase(String databaseName) throws DataAccessException {
         return mongoDataSources.mongoDatabaseCurrentTenantResolver();
     }
 }

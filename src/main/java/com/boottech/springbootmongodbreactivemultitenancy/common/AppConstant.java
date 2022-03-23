@@ -1,8 +1,10 @@
 package com.boottech.springbootmongodbreactivemultitenancy.common;
 
-public class AppConstant {
-    public static final String TENANT_HEADER = "X-Tenant";
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-    private AppConstant() {
-    }
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class AppConstant {
+    public static final String TENANT_HEADER_KEY = "X-Tenant";
+    public static final String TENANT_ID = "TenantID";
 }

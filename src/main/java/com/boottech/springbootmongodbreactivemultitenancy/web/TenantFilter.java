@@ -14,7 +14,6 @@ import reactor.core.publisher.Mono;
 @Component
 public class TenantFilter implements WebFilter {
 
-
    @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
        return Mono.justOrEmpty(exchange.getRequest().getHeaders().getFirst(AppConstant.TENANT_HEADER_KEY))

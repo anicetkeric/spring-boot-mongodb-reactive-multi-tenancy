@@ -12,10 +12,14 @@ import reactor.core.publisher.Mono;
 @Configuration
 public class MultiTenantMongoDBFactory extends SimpleReactiveMongoDatabaseFactory {
 
-
     private final MongoDataSources mongoDataSources;
 
-    public MultiTenantMongoDBFactory(@Qualifier("getMongoClient") MongoClient mongoClient, String databaseName, MongoDataSources mongoDataSources) {
+    /**
+     * @param mongoClient default mongo client connection
+     * @param databaseName default database
+     * @param mongoDataSources datasource bean component
+     */
+    public MultiTenantMongoDBFactory(@Qualifier("createMongoClient") MongoClient mongoClient, String databaseName, MongoDataSources mongoDataSources) {
         super(mongoClient, databaseName);
         this.mongoDataSources = mongoDataSources;
     }

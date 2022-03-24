@@ -64,7 +64,7 @@ public class MongoDataSources {
      * It is used to be injected into the constructor of MultiTenantMongoDBFactory.
      */
     @Bean
-    public MongoClient getMongoClient() {
+    public MongoClient createMongoClient() {
         MongoCredential credential = MongoCredential.createCredential(tenantClients.get(0).getUsername(), tenantClients.get(0).getDatabase(), tenantClients.get(0).getPassword().toCharArray());
         return MongoClients.create(MongoClientSettings.builder()
                 .applyToClusterSettings(builder ->

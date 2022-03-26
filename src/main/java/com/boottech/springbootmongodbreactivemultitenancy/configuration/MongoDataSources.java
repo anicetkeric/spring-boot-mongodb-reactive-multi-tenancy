@@ -22,12 +22,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Component
 @Slf4j
 public class MongoDataSources {
 
 
     private List<TenantClient> tenantClients;
+
+    private TenantClient defaultTenant = new TenantClient();
 
     private final DataSourceProperties dataSourceProperties;
 
@@ -44,9 +47,8 @@ public class MongoDataSources {
     public void initTenant() {
         tenantClients = new ArrayList<>();
         List<TenantDatasource> tenants = dataSourceProperties.getDatasources();
-        tenantClients = tenants.stream().map(t -> new TenantClient(t.getId(), t.getDatabase(),t.getPort(), t.getHost(), t.getUsername(), t.getPassword()))
-                .collect(Collectors.toList());
-
+        tenantClients = tenants.stream().map(t -> new TenantClient(t.getId(), t.getDatabase(),t.getPort(), t.getHost(), t.getUsername(), t.getPassword())).collect(Collectors.toList());
+        tenantClients.stream().findFirst().ifPresent(t -> defaultTenant = t);
     }
 
     /**
@@ -56,7 +58,7 @@ public class MongoDataSources {
      */
     @Bean
     public String databaseName() {
-        return tenantClients.get(0).getDatabase();
+        return defaultTenant.getDatabase();
     }
 
     /**
@@ -65,10 +67,10 @@ public class MongoDataSources {
      */
     @Bean
     public MongoClient createMongoClient() {
-        MongoCredential credential = MongoCredential.createCredential(tenantClients.get(0).getUsername(), tenantClients.get(0).getDatabase(), tenantClients.get(0).getPassword().toCharArray());
+        MongoCredential credential = MongoCredential.createCredential(defaultTenant.getUsername(), defaultTenant.getDatabase(), defaultTenant.getPassword().toCharArray());
         return MongoClients.create(MongoClientSettings.builder()
                 .applyToClusterSettings(builder ->
-                        builder.hosts(Collections.singletonList(new ServerAddress(tenantClients.get(0).getHost(),tenantClients.get(0).getPort()))))
+                        builder.hosts(Collections.singletonList(new ServerAddress(defaultTenant.getHost(),defaultTenant.getPort()))))
                 .credential(credential)
                 .build());
     }

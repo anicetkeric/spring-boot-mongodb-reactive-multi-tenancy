@@ -1,20 +1,20 @@
 tenants:
   datasources:
-    - id: tenant_a
+    - id: tenant1
       host: localhost
       port: 27017
-      database: tenant_a_db
+      database: booktenant1
       username: admin
       password: admin
-    - id: tenant_b
+    - id: tenant2
       host: localhost
       port: 27017
-      database: tenant_b_db
+      database: booktenant2
       username: admin
       password: admin
-    - id: tenant_c
+    - id: tenant3
       host: localhost
       port: 27017
-      database: tenant_c_db
+      database: booktenant3
       username: admin
       password: admin

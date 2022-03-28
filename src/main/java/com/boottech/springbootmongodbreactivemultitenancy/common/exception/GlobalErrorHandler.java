@@ -39,7 +39,7 @@ public class GlobalErrorHandler {
     @ExceptionHandler({TenantDataSourceNotFoundException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorResponse unauthorizedExceptionHandler(Exception ex) {
-       // LOGGER.error(ex.getMessage(), ex.getLocalizedMessage());
+        LOGGER.error(ex.getMessage(), ex.getLocalizedMessage());
         return new ErrorResponse(String.valueOf(HttpStatus.UNAUTHORIZED.value()),HttpStatus.UNAUTHORIZED.getReasonPhrase(), ex.getMessage(), Collections.emptyList());
     }
 

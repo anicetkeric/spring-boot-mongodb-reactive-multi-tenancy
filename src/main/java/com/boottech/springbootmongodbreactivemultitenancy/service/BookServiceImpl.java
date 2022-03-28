@@ -9,13 +9,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 @Slf4j
-public class BookServiceImpl implements BookService{
-
-    private final BookRepository bookRepository;
-
-    public BookServiceImpl(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+public record BookServiceImpl(BookRepository bookRepository) implements BookService{
 
     @Override
     public Flux<Book> getAllBook() {

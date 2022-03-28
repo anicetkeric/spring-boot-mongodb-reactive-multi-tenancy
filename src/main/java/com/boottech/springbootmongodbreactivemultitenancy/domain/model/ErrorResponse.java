@@ -13,5 +13,4 @@ public class ErrorResponse {
     private String message;
     private String description;
     private Object errors;
-
 }

@@ -20,7 +20,6 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Component
@@ -47,7 +46,7 @@ public class MongoDataSources {
     public void initTenant() {
         tenantClients = new ArrayList<>();
         List<TenantDatasource> tenants = dataSourceProperties.getDatasources();
-        tenantClients = tenants.stream().map(t -> new TenantClient(t.getId(), t.getDatabase(),t.getPort(), t.getHost(), t.getUsername(), t.getPassword())).collect(Collectors.toList());
+        tenantClients = tenants.stream().map(t -> new TenantClient(t.getId(), t.getDatabase(),t.getPort(), t.getHost(), t.getUsername(), t.getPassword())).toList();
         tenantClients.stream().findFirst().ifPresent(t -> defaultTenant = t);
     }
 

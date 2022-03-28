@@ -32,7 +32,7 @@ public class TenantClient extends TenantDatasource {
     }
 
     /**
-     * Init mongo client
+     * Init mongo client for tenant
      */
     private void createClient() {
         MongoCredential credential = MongoCredential.createCredential(this.getUsername(), this.getDatabase(), this.getPassword().toCharArray());

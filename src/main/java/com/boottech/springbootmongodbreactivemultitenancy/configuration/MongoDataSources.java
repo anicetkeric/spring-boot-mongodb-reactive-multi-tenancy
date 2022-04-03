@@ -10,7 +10,6 @@ import com.mongodb.ServerAddress;
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
 import com.mongodb.reactivestreams.client.MongoDatabase;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,6 @@ import java.util.List;
 
 
 @Component
-@Slf4j
 public class MongoDataSources {
 
 
@@ -39,7 +37,7 @@ public class MongoDataSources {
 
 
     /**
-     * Initialize all mongo datasource
+     * Initialize all mongo tenant datasource
      */
     @PostConstruct
     @Lazy
@@ -97,8 +95,6 @@ public class MongoDataSources {
      */
     private TenantClient getCurrentTenant(String tenantId){
       return tenantClients.stream().filter(c -> c.getId().equals(tenantId))
-                .findFirst().orElseThrow(() -> new TenantDataSourceNotFoundException("Tenant not found"));
+                .findFirst().orElseThrow(() -> new TenantDataSourceNotFoundException("Tenant ID not found"));
     }
-
-
 }

@@ -1,7 +1,6 @@
 package com.boottech.springbootmongodbreactivemultitenancy.web;
 
 import com.boottech.springbootmongodbreactivemultitenancy.common.AppConstant;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -10,7 +9,6 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-@Slf4j
 @Component
 public class TenantFilter implements WebFilter {
 
